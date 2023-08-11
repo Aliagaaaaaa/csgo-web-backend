@@ -22,6 +22,10 @@ const PlayerSchema = new Schema({
         type: String,
         required: false,
     },
+    faceit_last_hub: {
+        type: String,
+        required: false,
+    },
     crosshairList: [{
         crosshair: {
             type: String,
