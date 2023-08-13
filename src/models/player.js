@@ -10,20 +10,9 @@ const PlayerSchema = new Schema({
         type: String,
         required: true,
     },
-    faceit_id: {
-        type: String,
-        required: false,
-    },
-    faceit_elo: {
-        type: Number,
-        required: false,
-    },
-    faceit_name: {
-        type: String,
-        required: false,
-    },
-    faceit_last_hub: {
-        type: String,
+    faceit_player: {
+        type: Schema.Types.ObjectId,
+        ref: 'FaceitPlayer',
         required: false,
     },
     crosshairList: [{
