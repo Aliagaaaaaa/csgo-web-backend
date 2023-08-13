@@ -1,6 +1,6 @@
 const Leaderboard = require("../models/leaderboard");
 const Hub = require("../models/hub");
-const FaceitPlayer = require("../models/faceitPlayer");
+const FaceitPlayer = require("../models/faceitplayer");
 const axios = require('axios');
 
 
