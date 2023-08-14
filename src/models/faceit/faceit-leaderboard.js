@@ -66,4 +66,4 @@ const leaderboardSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Leaderboard', leaderboardSchema);
+module.exports = mongoose.model('FaceitLeaderboard', leaderboardSchema);

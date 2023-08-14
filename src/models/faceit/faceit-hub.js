@@ -16,4 +16,4 @@ const hubSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Hub', hubSchema);
+module.exports = mongoose.model('FaceitHub', hubSchema);

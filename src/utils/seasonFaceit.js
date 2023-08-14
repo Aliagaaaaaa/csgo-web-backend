@@ -1,49 +1,8 @@
-const Leaderboard = require("../models/leaderboard");
-const Hub = require("../models/hub");
+/*const Leaderboard = require("../models/faceit/faceit-leaderboard");
+const Hub = require("../models/faceit/faceit-hub");
 const FaceitPlayer = require("../models/faceitplayer");
 const axios = require('axios');
 
-
-const addHub = async (hub_id) => {
-    const response = await axios.get(`https://open.faceit.com/data/v4/hubs/${hub_id}`, {
-        headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${process.env.FACEIT_API_KEY}`,
-        },
-    });
-
-    const hub = response.data;
-
-    const newHub = new Hub({
-        hub_id: hub.hub_id,
-        hub_name: hub.name,
-        region: hub.region,
-    });
-
-    try {
-        await newHub.save();
-    } catch (err) {
-        console.error("Error saving new hub:", hub.hub_id);
-    }
-}
-
-const getLeaderboards = async (hub_id, offset, limit) => {
-    const response = await axios.get(`https://open.faceit.com/data/v4/leaderboards/hubs/${hub_id}?offset=${offset}&limit=${limit}`, {
-        headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${process.env.FACEIT_API_KEY}`,
-        },
-    });
-
-    const leaderboards = response.data.items;
-    if(leaderboards.length === limit){
-        const leaderboards2 = await getLeaderboards(hub_id, offset + limit, limit);
-        leaderboards.push(...leaderboards2);
-    }
-
-    return leaderboards;
-
-}
 
 const leaderboards = (hub_id) => {
     getAllLeaderboards(hub_id, 0, 50);
@@ -214,3 +173,4 @@ module.exports = {
     updateAllOngoingLeaderboard,
     updateLeaderboardPositions,
 }
+*/
