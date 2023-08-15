@@ -63,7 +63,7 @@ const analyzeMatch = async (match_id) => {
 }
 
 module.exports = {
-    analyzeMatch,
+    analyzeMatch
 }
 
 

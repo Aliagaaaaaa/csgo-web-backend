@@ -8,6 +8,7 @@ const leaderboardRoutes = require('./routes/leaderboard');
 
 const hubTracker = require('./services/tracker/hub');
 const playerTracker = require('./services/tracker/player');
+const leaderboardTracker = require('./services/tracker/leaderboard');
 
 dotenv.config({ path: '../.env' });
 
@@ -35,18 +36,20 @@ app.listen(port, () => {
 
 mongoose.connect(process.env.MONGO_CONNECT_URL);
 
-hubTracker.fetchHubs();
-playerTracker.fetchMatches(hubTracker.HUBS_TO_TRACK[0]);
+hubTracker.service();
 
+setTimeout(() => {
+    leaderboardTracker.service();
+}, 10 * 1000); // 10 seconds * 1000 milliseconds
 
-
-
-
-/*seasonFaceit.leaderboards("74caad23-077b-4ef3-8b1d-c6a2254dfa75");
+setTimeout(() => {
+    playerTracker.service();
+}, 10 * 1000); // 10 seconds * 1000 milliseconds
 
 setInterval(() => {
-    seasonFaceit.leaderboards("ef607668-a51a-4ea6-8b7b-dab07e0ab151");
-    seasonFaceit.leaderboards("74caad23-077b-4ef3-8b1d-c6a2254dfa75")
-}, 60 * 1000 * 10);*/
+    leaderboardTracker.service();
+}, 60 * 1000); // 60 seconds * 1000 milliseconds
 
-//player.fetchMatches(config.HUBS_TO_TRACK[0]);
+setInterval(() => {
+    playerTracker.service();
+}, 10 * 60 * 1000); // 10 minutes * 60 seconds * 1000 milliseconds

@@ -5,6 +5,14 @@ const Hub = require('../../models/faceit/faceit-hub');
 const axios = require('axios');
 const { analyzeMatch } = require('./crosshair');
 
+const service = async () => {
+    const hubs = await Hub.find();
+
+    for (const hub in hubs) {
+        await fetchMatches(hubs[hub].id);
+    }
+}
+
 const fetchMatches = async (hub) => {
     const response = await axios.get("https://open.faceit.com/data/v4/hubs/" + hub + "/matches?type=past&offset=0&limit=3", {
         headers: {
@@ -51,7 +59,7 @@ const fetchMatches = async (hub) => {
         //lets check if we have this match in our database
         const faceitmatch = await Faceitmatch.findOne({ match_id: matches[match].match_id });
         if (!faceitmatch) {
-            const hub = await Hub.findOne({ hub_id: matches[match].competition_id });
+            const hub = await Hub.findOne({ id: matches[match].competition_id });
             const newFaceitmatch = new Faceitmatch({
                 match_id: matches[match].match_id,
                 game: matches[match].game,
@@ -87,5 +95,5 @@ const fetchMatches = async (hub) => {
 }
 
 module.exports = {
-    fetchMatches,
+    service
 }

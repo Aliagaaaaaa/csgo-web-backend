@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const hubSchema = new Schema({
-    hub_id: {
+    id: {
         type: String,
         required: true,
     },
-    hub_name: {
+    name: {
         type: String,
         required: true,
     },

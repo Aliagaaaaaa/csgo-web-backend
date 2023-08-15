@@ -7,14 +7,18 @@ const HUBS_TO_TRACK = [
     'ef607668-a51a-4ea6-8b7b-dab07e0ab151', //FPL SA
 ]
 
-const fetchHub = async (hub_id) => {
-    const hubdb = await Hub.findOne({ hub_id: hub_id });
+const service = async () =>{
+    fetchHubs();
+}
+
+const fetchHub = async (id) => {
+    const hubdb = await Hub.findOne({ id: id });
     if (hubdb) {
-        console.log("Hub already in database: " + hub_id);
+        console.log("Hub already in database: " + id);
         return;
     }
 
-    const response = await axios.get(`https://open.faceit.com/data/v4/hubs/${hub_id}`, {
+    const response = await axios.get(`https://open.faceit.com/data/v4/hubs/${id}`, {
         headers: {
             accept: "application/json",
             Authorization: `Bearer ${process.env.FACEIT_API_KEY}`,
@@ -24,15 +28,15 @@ const fetchHub = async (hub_id) => {
     const hub = response.data;
 
     const newHub = new Hub({
-        hub_id: hub.hub_id,
-        hub_name: hub.name,
+        id: hub.hub_id,
+        name: hub.name,
         region: hub.region,
     });
 
     try {
         await newHub.save();
     } catch (err) {
-        console.error("Error saving new hub:", hub.hub_id);
+        console.error("Error saving new hub:", err);
     }
 }
 
@@ -43,6 +47,5 @@ const fetchHubs = async () => {
 }
 
 module.exports = {
-    HUBS_TO_TRACK,
-    fetchHubs
+    service
 }

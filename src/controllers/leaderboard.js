@@ -42,3 +42,7 @@ const getLeaderboard = async (req, res) => {
     }
 }
 
+module.exports = {
+    getLeaderboards,
+    getLeaderboard
+}

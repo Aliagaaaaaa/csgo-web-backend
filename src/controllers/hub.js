@@ -12,7 +12,7 @@ const getHubs = async (req, res) => {
 
 const getHub = async (req, res) => {
     try {
-        const hub = await Hub.findOne({ hub_id: req.params.id });
+        const hub = await Hub.findOne({ id: req.params.id });
         res.json(hub);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -20,7 +20,7 @@ const getHub = async (req, res) => {
 }
 
 const getHubLeaderboards = async (req, res) => {
-    const hub = await Hub.findOne({ hub_id: req.params.id });
+    const hub = await Hub.findOne({ id: req.params.id });
     try {
         const leaderboards = await Leaderboard.find({ hub: hub._id });
 
@@ -34,4 +34,10 @@ const getHubLeaderboards = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
+}
+
+module.exports = {
+    getHubs,
+    getHub,
+    getHubLeaderboards
 }

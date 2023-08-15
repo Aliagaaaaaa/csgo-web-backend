@@ -4,20 +4,20 @@ const FaceitPlayer = require("../models/faceitplayer");
 const axios = require('axios');
 
 
-const leaderboards = (hub_id) => {
-    getAllLeaderboards(hub_id, 0, 50);
+const leaderboards = (id) => {
+    getAllLeaderboards(id, 0, 50);
 } 
 
-const getAllLeaderboards = async (hub_id, offset, limit) => {
-    const hub = await Hub.findOne({ hub_id: hub_id });
+const getAllLeaderboards = async (id, offset, limit) => {
+    const hub = await Hub.findOne({ id: id });
     if(!hub){
-        addHub(hub_id);
+        addHub(id);
     }
 
 
 
-    const leaderboards = await getLeaderboards(hub_id, offset, limit);
-    const hubNew = await Hub.findOne({ hub_id: hub_id });
+    const leaderboards = await getLeaderboards(id, offset, limit);
+    const hubNew = await Hub.findOne({ id: id });
 
     for(let i = 0; i < leaderboards.length; i++){
         const leaderboarddb = await Leaderboard.findOne({ id: leaderboards[i].leaderboard_id });
