@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Leaderboard = require('../../models/faceit/faceit-leaderboard');
 const Hub = require('../../models/faceit/faceit-hub');
+const FaceitPlayer = require('../../models/faceit/faceit-player');
 
 const service = async () => {
     const hubs = await Hub.find({});
@@ -24,8 +25,6 @@ const findNewLeaderboards = async (hub) => {
         }
     }
 
-
-
     for(const leaderboard of newLeaderboards){
         const newLeaderboard = new Leaderboard({
             hub: hub["_id"],
@@ -38,14 +37,12 @@ const findNewLeaderboards = async (hub) => {
             positions: [],
         });
 
-        console.log(`Adding new leaderboard ${newLeaderboard.name} from hub ${hub.name}`);
-
         await newLeaderboard.save();
     }
 
 }
 
-const  updateLeaderboards = async (id) => {
+const updateLeaderboardsPositions = async (id) => {
     const hub = await Hub.findOne({ id: id });
     const leaderboards = await Leaderboard.find({ id: hub["_id"] });
 
@@ -64,11 +61,60 @@ const  updateLeaderboards = async (id) => {
 
             const data = response.data;
             leaderboard.status = data.status;
-            leaderboard.end = data.end;
-            leaderboard.updated_at = Date.now();
-            leaderboard.save();
+
+            leaderboard.positions = [];
+            for(const position of data.items){
+                let id = null;
+                const player = await FaceitPlayer.findOne({ id: position.player_id });
+                if(!player){
+                    const newPlayer = new FaceitPlayer({
+                        id: position.player.user_id,
+                        name: position.player.nickname,
+                        avatar: position.player.avatar,
+                        url: position.player.faceit_url,
+                    });
+
+                    await newPlayer.save();
+
+                    id = newPlayer["_id"];
+                } else {
+                    id = player["_id"];
+                }
+
+                leaderboard.positions.push({
+                    position: position.position,
+                    faceit_player: id,
+                    points: position.points,
+                    played: position.played,
+                    wins: position.wins,
+                    win_rate: position.win_rate,
+                    current_win_streak: position.current_streak,
+                });
+
+                
+
+                    
+            }
+
         }
     }
+}
+
+const getLeaderboardPositions = async (leaderboard_id, offset, limit) => {
+    const response = await axios.get(`https://open.faceit.com/data/v4/leaderboards/${leaderboard_id}?offset=${offset}&limit=${limit}`, {
+        headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${process.env.FACEIT_API_KEY}`,
+        },
+    });
+
+    const positions = response.data.items;
+    if(positions.length === limit){
+        const positions2 = await getLeaderboardPositions(leaderboard_id, offset + limit, limit);
+        positions.push(...positions2);
+    }
+
+    return positions;
 }
 
 async function fetchLeaderboards (id, offset, limit) {
@@ -84,6 +130,8 @@ async function fetchLeaderboards (id, offset, limit) {
         const leaderboards2 = await fetchLeaderboards(id, offset + limit, limit);
         leaderboards.push(...leaderboards2);
     }
+
+    
 
     return leaderboards;
 

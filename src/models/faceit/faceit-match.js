@@ -16,7 +16,7 @@ const faceitMatchSchema = new Schema({
     },
     hub: {
         type: Schema.Types.ObjectId,
-        ref: 'Hub',
+        ref: 'FaceitHub',
         required: true,
     },
     team1_name: {

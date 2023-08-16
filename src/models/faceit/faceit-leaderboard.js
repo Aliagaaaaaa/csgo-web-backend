@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const leaderboardSchema = new Schema({
     hub: {
         type: Schema.Types.ObjectId,
-        ref: 'Hub',
+        ref: 'FaceitHub',
         required: true,
     },
     id: {

@@ -6,23 +6,19 @@ const faceitPlayerSchema = new Schema({
         type: String,
         required: true,
     },
-    faceit_id: {
+    id: {
         type: String,
         required: true,
     },
-    faceit_elo: {
+    elo: {
         type: Number,
         required: false,
     },
-    faceit_name: {
+    avatar: {
         type: String,
         required: false,
     },
-    faceit_avatar: {
-        type: String,
-        required: false,
-    },
-    faceit_url: {
+    url: {
         type: String,
         required: true,
     }
