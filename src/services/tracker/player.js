@@ -59,7 +59,6 @@ const fetchMatches = async (hub) => {
         if (!faceitmatch) {
             const hub = await Hub.findOne({ id: match.competition_id });
 
-            console.log(match);
             const newFaceitmatch = new Faceitmatch({
                 match_id: match.match_id,
                 game: match.game,

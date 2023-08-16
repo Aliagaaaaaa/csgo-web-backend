@@ -14,7 +14,7 @@ const service = async () => {
 
 const findNewLeaderboards = async (hub) => {
     const leaderboards = await fetchLeaderboards(hub.id);
-    const localLeaderboards = await Leaderboard.find({ id: hub.id });
+    const localLeaderboards = await Leaderboard.find({ hub: hub["_id"] });
 
     const newLeaderboards = [];
 
